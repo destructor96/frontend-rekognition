@@ -21,7 +21,7 @@ export default class FileUpload extends Component {
     // Getting the signed url
     axios({
       url:
-      process.env.REACT_APP_API_ENDPOINT_UPLOAD_TO_S3 +
+        process.env.REACT_APP_API_ENDPOINT_UPLOAD_TO_S3 +
         this.state.fileToUpload.name,
       method: "POST",
     }).then((response) => {
@@ -49,8 +49,7 @@ export default class FileUpload extends Component {
 
           axios({
             method: "PUT",
-            url:
-              process.env.REACT_APP_API_ENDPOINT_GET_CUSTOM_LABEL,
+            url: process.env.REACT_APP_API_ENDPOINT_GET_CUSTOM_LABEL,
             data: { fileName: this.state.fileKey },
             headers: {
               "Content-Type": "multipart/form-data",
@@ -65,7 +64,6 @@ export default class FileUpload extends Component {
                   this.setState({
                     feedback: true,
                   });
-                  console.log(this.state.rekognitionResult.body[0]);
                 }
               );
             })
@@ -86,8 +84,7 @@ export default class FileUpload extends Component {
   updateFeedback = () => {
     axios({
       method: "PUT",
-      url:
-        process.env.REACT_APP_API_ENDPOINT_PUBLISH_FEEDBACK,
+      url: process.env.REACT_APP_API_ENDPOINT_PUBLISH_FEEDBACK,
       data: {
         fileName: this.state.filePath,
         correctPred: this.state.predValue,
@@ -169,9 +166,21 @@ export default class FileUpload extends Component {
         {this.state.feedback ? (
           <div>
             <h1>Result from Amazon Rekognition</h1>
-            <h3>Label: {this.state.rekognitionResult.body[0].Name}</h3>
             <h3>
-              Confidence: {this.state.rekognitionResult.body[0].Confidence}
+              Label:{" "}
+              {this.state.rekognitionResult.body
+                ? this.state.rekognitionResult.body.length > 0
+                  ? this.state.rekognitionResult.body[0].Name
+                  : "No Match Found"
+                : null}
+            </h3>
+            <h3>
+              Confidence:{" "}
+              {this.state.rekognitionResult.body
+                ? this.state.rekognitionResult.body.length > 0
+                  ? this.state.rekognitionResult.body[0].Confidence
+                  : "No Match Found"
+                : null}
             </h3>
             <div className='form-group'></div>
             <div className='form-group'>
@@ -199,14 +208,9 @@ export default class FileUpload extends Component {
                 className='feedback-form'
                 id='simpleInput'
                 onChange={(e) => {
-                  this.setState(
-                    {
-                      comments: e.target.value,
-                    },
-                    () => {
-                      console.log(this.state);
-                    }
-                  );
+                  this.setState({
+                    comments: e.target.value,
+                  });
                 }}
               />
             </div>
