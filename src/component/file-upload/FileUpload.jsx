@@ -4,7 +4,8 @@ import * as styles from "./FileUpload.module.css";
 
 export default class FileUpload extends Component {
   state = {
-    fileToUpload: undefined,
+    fileToUpload: null,
+    filePreview: null,
     uploadSuccess: undefined,
     error: undefined,
     feedback: false,
@@ -137,21 +138,36 @@ export default class FileUpload extends Component {
                   className='form-control-file'
                   id='fileUpload'
                   onChange={(e) => {
+                    if (e.target.files.length > 0)
+                      this.setState({
+                        fileToUpload: e.target.files[0],
+                        filePreview: URL.createObjectURL(e.target.files[0]),
+                      });
+                    else
                     this.setState({
-                      fileToUpload: e.target.files[0],
+                      fileToUpload: null,
+                      filePreview: null,
                     });
                   }}
                 />
+
                 {this.state.fileToUpload ? (
-                  <button
-                    type='button'
-                    className='btn btn-light'
-                    onClick={(e) => {
-                      this.uploadFile();
-                    }}
-                  >
-                    Upload your file
-                  </button>
+                  <div>
+                    <img
+                      className={styles.imagePreview}
+                      src={this.state.filePreview}
+                      alt='Image Selected'
+                    />
+                    <button
+                      type='button'
+                      className='btn btn-light'
+                      onClick={(e) => {
+                        this.uploadFile();
+                      }}
+                    >
+                      Upload your file
+                    </button>
+                  </div>
                 ) : null}
 
                 <div>
@@ -199,8 +215,28 @@ export default class FileUpload extends Component {
                 }}
               >
                 <option value={false}></option>
-                <option value='Yes'>Yes</option>
-                <option value='No'>No</option>
+                <option value='Fluid Pount'>Fluid Pount</option>
+                <option value='Gas Interference'>Gas Interference</option>
+                <option value='Gas Lock'>Gas Lock</option>
+                <option value='Good Pumping Action'>Good Pumping Action</option>
+                <option value='High Friction'>High Friction</option>
+                <option value='High Friction and Gas Interference'>
+                  High Friction and Gas Interference
+                </option>
+                <option value='Leaky Valves'>Leaky Valves</option>
+                <option value='Low PI'>Low PI</option>
+                <option value='Low Span'>Low Span</option>
+                <option value='Low Span and High Friction'>
+                  Low Span and High Friction
+                </option>
+                <option value='Severe Gas Interference'>
+                  Severe Gas Interference
+                </option>
+                <option value='Slight Gas Interference'>
+                  Slight Gas Interference
+                </option>
+                <option value='T.V. Delay'>T.V. Delay</option>
+                <option value='Tagging'>Tagging</option>
               </select>
               <label htmlFor='simpleInput'>Comments</label>{" "}
               <input
