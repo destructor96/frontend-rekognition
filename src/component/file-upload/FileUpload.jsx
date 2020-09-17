@@ -21,7 +21,7 @@ export default class FileUpload extends Component {
     // Getting the signed url
     axios({
       url:
-        "https://fcw8650ush.execute-api.us-east-2.amazonaws.com/dev/upload-to-s3?fileName=" +
+      process.env.REACT_APP_API_ENDPOINT_UPLOAD_TO_S3 +
         this.state.fileToUpload.name,
       method: "POST",
     }).then((response) => {
@@ -50,7 +50,7 @@ export default class FileUpload extends Component {
           axios({
             method: "PUT",
             url:
-              "https://fcw8650ush.execute-api.us-east-2.amazonaws.com/dev/get-custom-label",
+              process.env.REACT_APP_API_ENDPOINT_GET_CUSTOM_LABEL,
             data: { fileName: this.state.fileKey },
             headers: {
               "Content-Type": "multipart/form-data",
@@ -87,7 +87,7 @@ export default class FileUpload extends Component {
     axios({
       method: "PUT",
       url:
-        "https://fcw8650ush.execute-api.us-east-2.amazonaws.com/dev/publish-feedback",
+        process.env.REACT_APP_API_ENDPOINT_PUBLISH_FEEDBACK,
       data: {
         fileName: this.state.filePath,
         correctPred: this.state.predValue,
@@ -126,11 +126,11 @@ export default class FileUpload extends Component {
         <div className='logo'>
           <img src='/cllogo.png' alt='Amazon Rekognition Custom Labels Logo' />
         </div>
-        <h2>Amazon Rekognition Custom Labels Demo</h2>
+        <h2>Amazon Rekognition Custom Labels Project</h2>
         <div className='powered'>powered by Amazon Rekognition</div>
         <div className={styles.fileUploadCont}>
           <div className={styles.header}>
-            File Upload to S3 with Lambda, And React axios Application
+            Choose file to test using Amazon Rekognition Custom Label Model
           </div>
           <div>
             <form>
